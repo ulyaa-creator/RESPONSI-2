@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Pembayaran Berhasil</title>
+
+<style>
+:root{
+  --primary:#cdb096;
+  --bg:#f6f4f2;
+  --card:#ffffff;
+  --muted:#6f6f6f;
+  --line:#ece6dd;
+  --shadow:0 14px 30px rgba(15,12,8,.10);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
+  background:linear-gradient(135deg,#f9f9f9,#c09565);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+.box{
+  width:min(680px,96vw);
+}
+.card{
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(255,255,255,.55);
+  border-radius:28px;
+  box-shadow:var(--shadow);
+  padding:22px;
+}
+.head{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.check{
+  width:56px;height:56px;
+  border-radius:18px;
+  background:#1aa35c;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-size:30px;
+  font-weight:900;
+}
+h1{
+  margin:0;
+  font-size:22px;
+}
+p{
+  margin:6px 0 0;
+  color:#333;
+}
+.small{
+  color:rgba(0,0,0,.6);
+  font-size:14px;
+  line-height:1.5;
+  margin-top:10px;
+}
+.row{
+  margin-top:14px;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  padding:14px;
+  background:#fff;
+  border-radius:18px;
+  border:1px solid rgba(0,0,0,.06);
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#f2efe9;
+  border:1px solid rgba(0,0,0,.06);
+  padding:8px 12px;
+  border-radius:999px;
+  font-weight:900;
+  font-size:13px;
+}
+.btns{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+a.btn{
+  text-align:center;
+  padding:14px 16px;
+  border-radius:999px;
+  font-weight:900;
+  text-decoration:none;
+  border:1px solid rgba(0,0,0,.08);
+  background:#fff;
+  color:#111;
+}
+a.btn.primary{
+  background:#111;
+  color:#fff;
+  border-color:#111;
+}
+@media(max-width:520px){
+  .btns{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+  <div class="box">
+    <div class="card">
+
+      <div class="head">
+        <div class="check">✓</div>
+        <div>
+          <h1>Hore, pembayaranmu berhasil!</h1>
+          <p>
+            Order <b>LIV-202601051234</b> sedang <b>Dikemas</b>.
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <div class="small">Total Pembayaran</div>
+          <div style="font-weight:900;font-size:20px">
+            Rp 120.000
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div class="small">Metode</div>
+          <div style="font-weight:900">
+            QRIS · GOPAY
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+        <span class="badge">Poin didapat: <b>1</b></span>
+        <span class="badge">Total poin kamu: <b>5</b></span>
+      </div>
+
+      <div class="small">
+        Kamu bisa cek status pesanan di menu <b>Pesanan Saya</b>.
+      </div>
+
+      <div class="btns">
+        <a class="btn" href="index.html">Beranda</a>
+        <a class="btn primary" href="pesanan_saya.html">Pesanan Saya</a>
+      </div>
+
+    </div>
+  </div>
+<script>
+const data = localStorage.getItem("last_order");
+
+if(!data){
+  alert("Data pesanan tidak ditemukan");
+  location.href = "pelanggan.html";
+}
+
+const order = JSON.parse(data);
+
+// isi teks
+document.querySelector("p b").innerText = order.id;
+
+document.querySelector(".row div div:nth-child(2)").innerText =
+  "Rp " + order.total.toLocaleString("id-ID");
+
+document.querySelector(".row div:last-child div:nth-child(2)").innerText =
+  order.payment;
+
+// poin
+const badges = document.querySelectorAll(".badge b");
+badges[0].innerText = order.pointEarned;
+
+// (opsional) total poin simulasi
+badges[1].innerText = 5 + order.pointEarned;
+</script>
+
+</body>
+</html>

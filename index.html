@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>LIVERA | Smart Living Solutions</title>
+
+    <!-- CSS DIPANGGIL UTUH -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="logo">
+        <img src="logo_LIVERA.png" alt="LIVERA" />
+      </div>
+      <div class="nav-menu">
+       <a href="#home">Home</a>
+       <a href="#about">About</a>
+      </div>
+
+    </div>
+
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <h1>Selamat Datang di LIVERA</h1>
+        <p>Smart Living Solutions</p>
+        <a href="#" id="btnPesan"class="hero-btn"> Pesan Sekarang
+        </a>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <h2>Tentang LIVERA</h2>
+      <p>
+        LIVERA adalah brand home living yang menghadirkan solusi peralatan rumah tangga modern dengan desain elegan dan fungsional.
+Kami percaya bahwa rumah bukan sekadar tempat tinggal, melainkan ruang untuk menciptakan kenyamanan, kehangatan, dan kualitas hidup yang lebih baik.
+
+Dengan konsep Smart Living Solutions, LIVERA menyediakan produk pilihan mulai dari furnitur, dekorasi, hingga kebutuhan rumah tangga yang dirancang untuk menunjang gaya hidup masa kini.
+
+LIVERA juga didukung oleh sistem informasi terintegrasi yang memudahkan pelanggan dalam melakukan pemesanan, pembayaran, hingga pelacakan pesanan secara cepat dan transparan.
+
+Kami hadir untuk membantu setiap rumah menjadi lebih hidup, nyaman, dan bermakna.
+      </p>
+    </section>
+
+    <footer class="footer">
+  <div class="footer-container">
+
+    <div class="footer-col">
+      <h4>Contact & Address</h4>
+      <p><strong>LIVERA Home Living</strong></p>
+      <p>Jl. Kaliurang No. 123, Yogyakarta</p>
+      <p>CS: 0812-7901-2371</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Social</h4>
+      <p>Instagram @Livera.id · TikTok > liveraliving </p>
+      <p>Promo mingguan & koleksi terbaru</p>
+    </div>
+
+  </div>
+    </footer>
+    <script>
+      const customSelect = document.querySelector(".custom-select");
+      const selected = customSelect.querySelector(".selected");
+      const options = customSelect.querySelector(".options");
+      const hiddenInput = document.getElementById("entity");
+
+      selected.onclick = () => {
+        options.style.display =
+          options.style.display === "block" ? "none" : "block";
+      };
+
+      options.querySelectorAll("div").forEach((o) => {
+        o.onclick = () => {
+          selected.textContent = o.textContent;
+          hiddenInput.value = o.dataset.value;
+          options.style.display = "none";
+        };
+      });
+    </script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: #f7f3ee; /* cream */
+        color: #3b3b3b;
+        transition: opacity 0.6s ease;
+      }
+      body.fade-out {
+        opacity: 0;
+      }
+      a {
+        text-decoration: none;
+      }
+
+      /* ===== NAVBAR ===== */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 60px;
+        background: #faf6f0;
+        border-bottom: 1px solid #e6ded3;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: #8b5e3c;
+      }
+
+      .logo img {
+        height: 70px; /* atur tinggi logo */
+        width: auto;
+        display: block;
+      }
+
+      .logo span {
+        font-size: 26px;
+      }
+
+      .nav-menu {
+        display: flex;
+        gap: 30px;
+      }
+      .nav-menu a {
+        color: #8b5e3c;
+        font-weight: 500;
+      }
+
+      /* ===== HERO SLIDER (FIXED) ===== */
+      .hero {
+        position: relative;
+        height: 650px;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        animation: slider 15s infinite linear;
+        filter: brightness(0.6);
+      }
+      .btn-nav{
+        background:#c27a3a;
+        color:#fff !important;
+        padding:10px 18px;
+        border-radius:999px;
+        font-weight:600;
+      }
+      .btn-nav:hover{
+  background:#a8642f;
+      }
+      .hero-btn{
+        margin-top:28px;
+        background:#c27a3a;
+        color:white;
+        padding:18px 34px;
+        border-radius:999px;
+        font-size:18px;
+        font-weight:700;
+      }
+      .hero-btn:hover{
+        background:#a8642f;
+      }
+
+      /* 🔧 FIX: TAMBAH 100% */
+      @keyframes slider {
+        0% {
+          background-image: url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c");
+        }
+        33% {
+          background-image: url("https://images.unsplash.com/photo-1615874959474-d609969a20ed");
+        }
+        66% {
+          background-image: url("https://images.unsplash.com/photo-1586023492125-27b2c045efd7");
+        }
+        100% {
+          background-image: url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c");
+        }
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+      }
+
+      .hero-content h1 {
+        font-size: 64px;
+        margin-bottom: 18px;
+        font-weight: 800;
+      }
+
+      .hero-content p {
+        font-size: 20px;
+        opacity: 0.9; /* sebelumnya 0.15 terlalu pucat */
+      }
+
+      /* ===== SECTION ===== */
+      .section {
+        max-width: 1000px;
+        margin: 60px auto 120px;
+        padding: 0 40px;
+      }
+
+      .section h2 {
+        font-size: 30px;
+        color: #8b5e3c;
+      }
+
+      .section p {
+        font-size: 20px;
+        line-height: 1.7;
+        color: #555;
+        justify-content: left;
+      }
+
+      /* ===== LOGIN / DAFTAR ===== */
+      .auth-wrapper {
+        display: flex;
+        justify-content: center;
+      }
+
+      .auth-box {
+        background: #f3ede4;
+        width: 380px;
+        padding: 30px;
+        border-radius: 14px;
+        box-shadow: 0 12px 30px rgba(237, 153, 30, 0.35);
+      }
+
+      .auth-box h3 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 22px;
+        color: #8b5e3c;
+      }
+
+      .auth-box label {
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .auth-box input,
+      .auth-box select {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0 15px;
+        border-radius: 8px;
+        border: 1px solid #b4631cff;
+      }
+
+      .remember {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 8px;
+        width: 100%;
+        margin: 10px 0 20px;
+
+        padding-left: 14px;
+      }
+
+      .remember input[type="checkbox"] {
+        margin: 0;
+      }
+
+      .remember label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+      }
+
+      .auth-box button {
+        width: 100%;
+        padding: 11px;
+        background: #c27a3a; /* coklat oren */
+        border: none;
+        color: white;
+        border-radius: 8px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+
+      .auth-box button:hover {
+        background: #a8642f;
+      }
+
+      .auth-links {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 13px;
+      }
+
+      .auth-links a {
+        color: #8b5e3c;
+        font-weight: 500;
+      }
+
+      .auth-links a:hover {
+        color: #a8642f;
+        text-decoration: underline;
+      }
+
+      .auth-box input:focus,
+      .auth-box select:focus {
+        outline: none;
+        border-color: #c27a3a;
+        box-shadow: 0 0 0 2px rgba(194, 122, 58, 0.25);
+      }
+
+      input[type="checkbox"] {
+        accent-color: #c27a3a;
+      }
+      /* ===== CUSTOM SELECT ===== */
+      .custom-select {
+        position: relative;
+        width: 100%;
+        margin-bottom: 15px;
+        user-select: none;
+      }
+
+      .selected {
+        padding: 10px; /* SAMA */
+        border: 1px solid #b4631cff; /* SAMA */
+        border-radius: 8px; /* SAMA */
+        background: #ffffff;
+        cursor: pointer;
+        font-size: 15px;
+      }
+
+      .selected:focus,
+      .custom-select:focus-within .selected {
+        border-color: #c27a3a;
+        box-shadow: 0 0 0 2px rgba(194, 122, 58, 0.25);
+      }
+
+      .selected::after {
+        content: "▾";
+        float: right;
+        color: #8b5e3c;
+      }
+
+      .options {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #ffffff;
+        border: 2px solid #c27a3a;
+        border-radius: 12px;
+        margin-top: 6px;
+        overflow: hidden;
+        z-index: 100;
+      }
+
+      .options div {
+        padding: 12px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .options div:hover {
+        background: #c27a3a;
+        color: #ffffff;
+      }
+
+      /* ===== FOOTER ===== */
+      footer {
+        background: #a17a3fff;
+        color: white;
+        padding: 15px 20px;
+        text-align: center;
+      }
+.footer-container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 0 40px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.footer-col h4 {
+  margin-bottom: 12px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.footer-col p {
+  margin: 6px 0;
+  font-size: 15px;
+  color: #d0d0d0;
+  line-height: 1.6;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    gap: 30px;
+  }
+}
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 768px) {
+        .navbar {
+          padding: 18px 25px;
+          flex-direction: column;
+          gap: 10px;
+        }
+      }
+    </style>
+    <script>
+  const btnPesan = document.getElementById("btnPesan");
+
+  btnPesan.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    document.body.classList.add("fade-out");
+
+    setTimeout(() => {
+      window.location.href = "pelanggan.html";
+    }, 600); // sama dengan durasi CSS
+  });
+</script>
+
+  </body>
+</html>

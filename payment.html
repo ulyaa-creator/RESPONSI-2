@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Checkout - LIVERA</title>
+
+<style>
+:root{
+  --primary:#c07a3a;
+  --bg:#f6f4f2;
+  --card:#ffffff;
+  --line:#ece6dd;
+  --shadow:0 14px 30px rgba(15,12,8,.08);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:"Segoe UI",system-ui,sans-serif;
+  background:var(--bg);
+}
+a{text-decoration:none;color:inherit}
+
+.topbar{
+  position:sticky;top:0;
+  background:#f6f4f2;
+  border-bottom:1px solid var(--line);
+}
+.topbar .inner{
+  max-width:980px;margin:auto;
+  padding:14px 16px;
+  display:flex;align-items:center;gap:12px;
+}
+.back{
+  width:42px;height:42px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  display:grid;place-items:center;
+  background:#fff;
+  font-size:18px;
+}
+
+.wrap{max-width:980px;margin:auto;padding:18px 16px 120px}
+.card{
+  background:#fff;
+  border-radius:22px;
+  box-shadow:var(--shadow);
+  padding:18px;margin-bottom:16px;
+}
+.input{
+  width:100%;padding:12px;
+  border-radius:16px;
+  border:1px solid var(--line);
+}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.item{
+  display:grid;
+  grid-template-columns:64px 1fr auto;
+  gap:12px;
+  padding:12px 0;
+  border-bottom:1px solid #eee;
+}
+.item img{
+  width:64px;height:64px;
+  border-radius:12px;object-fit:cover;
+}
+
+.payOpt{
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:12px;margin:10px 0;
+}
+.subopts{display:none;margin-top:10px}
+.subopts.active{display:block}
+
+.bottomBar{
+  position:fixed;left:0;right:0;bottom:0;
+  background:#fff;
+  border-top:1px solid var(--line);
+  z-index:9999;
+}
+.bottomBar .inner{
+  max-width:980px;margin:auto;
+  padding:14px 16px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.btn{
+  padding:12px 18px;
+  border-radius:999px;
+  border:none;font-weight:800;
+}
+.btn.primary{background:var(--primary);color:#fff;cursor:pointer}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <div class="inner">
+    <a href="pelanggan.html" class="back">←</a>
+    <b>Checkout</b>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="card">
+    <h3>Alamat Pengiriman</h3>
+    <div class="row2">
+      <input id="nama" class="input" placeholder="Nama penerima">
+      <input id="hp" class="input" placeholder="No. HP">
+    </div>
+    <textarea id="alamat" class="input" style="margin-top:10px" placeholder="Alamat lengkap"></textarea>
+  </div>
+
+  <div class="card">
+    <h3>Produk Dibeli</h3>
+    <div id="productList"></div>
+  </div>
+
+  <div class="card">
+    <h3>Metode Pembayaran</h3>
+
+    <div class="payOpt">
+      <label><input type="radio" name="method" value="qris" checked> QRIS</label>
+      <div class="subopts active" data-for="qris">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=LIVERA">
+      </div>
+    </div>
+
+    <div class="payOpt">
+      <label><input type="radio" name="method" value="ewallet"> E-Wallet</label>
+    </div>
+
+    <div class="payOpt">
+      <label><input type="radio" name="method" value="bank"> Transfer Bank</label>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Total</h3>
+    <b id="totalText"></b>
+  </div>
+
+</div>
+
+<div class="bottomBar">
+  <div class="inner">
+    <b id="bottomTotal"></b>
+    <button id="btnConfirm" class="btn primary" type="button">
+      Konfirmasi & Bayar
+    </button>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* ================= LOAD CART ================= */
+  const products = JSON.parse(localStorage.getItem("liv_products")) || [];
+  const cart = JSON.parse(localStorage.getItem("liv_cart")) || {};
+  const list = document.getElementById("productList");
+  const totalText = document.getElementById("totalText");
+  const btn = document.getElementById("btnConfirm");
+
+  if (!btn) {
+    alert("Tombol Konfirmasi tidak ditemukan");
+    return;
+  }
+
+  if (Object.keys(cart).length === 0) {
+    alert("Keranjang kosong");
+    location.href = "pelanggan.html";
+    return;
+  }
+
+  let total = 0;
+  list.innerHTML = ""; // ⬅️ PENTING BIAR TIDAK DOBEL
+
+  Object.entries(cart).forEach(([id, qty]) => {
+    const p = products.find(x => x.id == id);
+    if (!p) return;
+
+    const subtotal = p.price * qty;
+    total += subtotal;
+
+    list.innerHTML += `
+      <div class="item">
+        <img src="${p.img}">
+        <div>
+          <b>${p.name}</b><br>
+          Rp ${p.price.toLocaleString("id-ID")} x ${qty}
+        </div>
+        <b>Rp ${subtotal.toLocaleString("id-ID")}</b>
+      </div>
+    `;
+  });
+
+  totalText.innerText = "Rp " + total.toLocaleString("id-ID");
+
+  /* ================= PAYMENT TOGGLE ================= */
+  document.querySelectorAll('input[name="method"]').forEach(radio => {
+    radio.addEventListener("change", () => {
+      document.querySelectorAll(".subopts").forEach(box => {
+        box.classList.toggle("active", box.dataset.for === radio.value);
+      });
+    });
+  });
+
+  /* ================= CONFIRM BUTTON ================= */
+  btn.addEventListener("click", async () => {
+
+    const nama = document.getElementById("nama").value.trim();
+    const hp = document.getElementById("hp").value.trim();
+    const alamat = document.getElementById("alamat").value.trim();
+    const payment = document.querySelector('input[name="method"]:checked')?.value;
+
+    if (!nama || !hp || !alamat || !payment) {
+      alert("Lengkapi data dulu");
+      return;
+    }
+
+    const produkList = [];
+    Object.keys(cart).forEach(id => {
+      const p = products.find(x => x.id == id);
+      if (p) produkList.push(`${p.name} x ${cart[id]}`);
+    });
+
+    const payload = {
+      order_id: "LIV-" + Date.now(),
+      nama,
+      hp,
+      alamat,
+      produk: produkList.join(", "),
+      total,
+      payment
+    };
+
+    try {
+      await fetch("https://script.google.com/macros/s/AKfycbz_cP0_Ffn7AfW4wx0nHB04YCS1lcJ04CP_Qus409I1oZf6KYLHwEIgdTxrwdeT6b2Bog/exec", {
+  method: "POST",
+  mode: "no-cors",   // ⬅️ INI KUNCINYA
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(payload)
+});
+
+
+      localStorage.setItem("last_order", JSON.stringify({
+        id: payload.order_id,
+        total,
+        payment,
+        pointEarned: Math.floor(total / 1000000)
+      }));
+
+      localStorage.removeItem("liv_cart");
+      window.location.href = "payment_proses.html";
+
+    } catch (err) {
+      alert("Gagal mengirim data");
+      console.error(err);
+    }
+  });
+});
+</script>
+
+</body>
+</html>
